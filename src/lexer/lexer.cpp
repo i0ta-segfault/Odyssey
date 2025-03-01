@@ -461,7 +461,7 @@ Token Lexer::getNextToken(std::deque<Token>& tokensBuffer){
         while(isalnum(characterRead) || characterRead == '_'){ // or foo9_bar are acceptable
             readChar();
         }
-        int length = currentPosition - start - 1;
+        int length = currentPosition - start;
         std::string literal = sourceCode.substr(start, length);
         if(isKeyword(literal)){
             token.type = TokenType::KEYWORDS;

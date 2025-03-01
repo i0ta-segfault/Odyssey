@@ -1,4 +1,5 @@
 #include "odyssey.hpp"
+#include <fstream>
 
 int main(int argc, char** argv){
 
@@ -20,19 +21,32 @@ int main(int argc, char** argv){
     if (tokens.empty()) {
         std::cout << "Tokens vector came back empty" << std::endl;
     }
-    std::cout << std::string(50, '-') << std::endl;
-    for (size_t i = 0; i < tokens.size(); i++) {
-        // if (tokens[i].literal.empty()) {
-        //     std::printf("Token %zu has an empty literal\n", i);
-        //     continue;
-        // }
-        std::printf("Token Type: %-30s | Literal: %-20s | Line: %d   Column: %d\n",
-            getTokenTypeName(tokens[i]).c_str(),  // Convert std::string to C-style string
-            tokens[i].literal.c_str(),           // Convert std::string to C-style string
-            tokens[i].line_number,
-            tokens[i].column_number);
+
+    std::ofstream logFile("../logs/lexer_output.log");
+    if (!logFile) {
+        std::cerr << BOLD << RED << "Error: Could not create lexer_output.log" << RESET << std::endl;
+        exit(EXIT_FAILURE);
     }
-    std::cout << std::string(50, '-') << std::endl;
+
+    logFile << "[" << std::endl;
+
+    for (size_t i = 0; i < tokens.size(); i++) {
+        logFile << "    {" << std::endl;
+        logFile << "        \"line\": " << tokens[i].line_number << "," << std::endl;
+        logFile << "        \"column\": " << tokens[i].column_number << "," << std::endl;
+        logFile << "        \"type\": \"" << getTokenTypeName(tokens[i]) << "\"," << std::endl;
+        logFile << "        \"literal\": \"" << tokens[i].literal << "\"" << std::endl;
+        logFile << "    }";
+        if (i != tokens.size() - 1) logFile << ",";
+            logFile << std::endl;
+    }
+
+    logFile << "]" << std::endl;
+
+
+    logFile.close();
+
+    std::cout << "Lexer output written to lexer_output.log" << std::endl;
 
     return 0;
 }

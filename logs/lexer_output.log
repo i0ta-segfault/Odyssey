@@ -1,0 +1,50 @@
+[
+    {
+        "line": 1,
+        "column": 2,
+        "type": "KEYWORDS",
+        "literal": "let "
+    },
+    {
+        "line": 1,
+        "column": 5,
+        "type": "IDENTIFIER",
+        "literal": "foo_bar:"
+    },
+    {
+        "line": 1,
+        "column": 13,
+        "type": "COLON",
+        "literal": ":"
+    },
+    {
+        "line": 1,
+        "column": 14,
+        "type": "DATA_TYPE",
+        "literal": "i8 "
+    },
+    {
+        "line": 1,
+        "column": 16,
+        "type": "ASSIGNMENT_OPERATOR",
+        "literal": "="
+    },
+    {
+        "line": 1,
+        "column": 18,
+        "type": "VALUE_LITERAL",
+        "literal": "0"
+    },
+    {
+        "line": 1,
+        "column": 20,
+        "type": "SEMICOLON",
+        "literal": ";"
+    },
+    {
+        "line": 1,
+        "column": 20,
+        "type": "ENDOFFILE",
+        "literal": ""
+    }
+]

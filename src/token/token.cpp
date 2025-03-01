@@ -76,14 +76,13 @@ std::string getTokenTypeName(Token token) {
 }
 
 bool isKeyword(std::string identifier){
-    std::cout << "Identifier: '" << identifier << "' (length: " << identifier.length() << ")" << std::endl;
     static const std::unordered_set<std::string> keywords = {
         "if", "else", "while", "for", "return", "func", "let",
         "break", "continue",
         "struct", "enum",
         "true", "false"
     };
-
+    identifier.erase(identifier.find_last_not_of(" \t\n\r\f\v") + 1);
     bool chk =  keywords.find(identifier) != keywords.end();
     std::cout << chk << std::endl;
     if(chk) return true;
@@ -96,6 +95,6 @@ bool isDataType(std::string identifier){
         "ui8", "ui16", "ui32", "ui64",
         "String", "char", "bool"
     };
-
+    identifier.erase(identifier.find_last_not_of(" \t\n\r\f\v") + 1);
     return datatypes.find(identifier) != datatypes.end();
 }
