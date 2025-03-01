@@ -18,3 +18,10 @@ set(SOURCES
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
 add_executable(odyssey ${SOURCES})
+
+add_custom_target(run
+    COMMAND ./odyssey main.ode
+    DEPENDS odyssey
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+    COMMENT "Running main.ode"
+)

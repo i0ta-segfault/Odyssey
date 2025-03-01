@@ -165,7 +165,8 @@ CMakeFiles/odyssey.dir/src/main.cpp.o: \
  /usr/include/c++/12/bits/stl_uninitialized.h \
  /usr/include/c++/12/bits/stl_vector.h \
  /usr/include/c++/12/bits/stl_bvector.h \
- /usr/include/c++/12/bits/vector.tcc \
+ /usr/include/c++/12/bits/vector.tcc /usr/include/c++/12/deque \
+ /usr/include/c++/12/bits/stl_deque.h /usr/include/c++/12/bits/deque.tcc \
  /home/rakshit/Programming/Odyssey/include/parser.hpp \
  /home/rakshit/Programming/Odyssey/include/ast.hpp \
  /usr/include/c++/12/fstream /usr/include/c++/12/bits/codecvt.h \

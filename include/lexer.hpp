@@ -2,6 +2,7 @@
 
 #include "token.hpp"
 #include <vector>
+#include <deque>
 
 struct Lexer{
     std::string sourceCode;
@@ -20,7 +21,7 @@ struct Lexer{
     Lexer(std::string sourceCode);
     void reportError(const std::string& message);
 
-    Token getNextToken(std::vector<Token>& tokensBuffer);
+    Token getNextToken(std::deque<Token>& tokensBuffer);
 
     void readChar();
 

@@ -52,10 +52,10 @@ void Lexer::readChar(){
     }
 }
 
-Token Lexer::getNextToken(std::vector<Token>& tokensBuffer){
+Token Lexer::getNextToken(std::deque<Token>& tokensBuffer){
     if (!tokensBuffer.empty()) {
-        Token token = tokensBuffer.back();
-        tokensBuffer.pop_back();
+        Token token = tokensBuffer.front();
+        tokensBuffer.pop_front();
         return token;
     }
     Token token;
@@ -66,7 +66,7 @@ Token Lexer::getNextToken(std::vector<Token>& tokensBuffer){
     while(characterRead == ' ' || characterRead == '\n' || characterRead == '\t' || characterRead == '\r')
         readChar();
 
-    if (nextCharacter == 0){
+    if (characterRead == 0) {
         token.type = TokenType::ENDOFFILE;
         token.literal = "";
         return token;
@@ -221,6 +221,7 @@ Token Lexer::getNextToken(std::vector<Token>& tokensBuffer){
             readChar();
             return token;
         } else{
+            std::cout << "entere single > case" << std::endl;
             token.type = TokenType::GREATER_THAN;
             token.literal = ">";
             readChar();
@@ -349,9 +350,45 @@ Token Lexer::getNextToken(std::vector<Token>& tokensBuffer){
         return token;
     }
 
+    if (characterRead == ';'){
+        token.type = TokenType::SEMICOLON;
+        token.literal = ";";
+        readChar();
+        return token;
+    }
+
+    if (characterRead == ','){
+        token.type = TokenType::COMMA;
+        token.literal = ",";
+        readChar();
+        return token;
+    }
+
+    if (characterRead == '\\'){
+        token.type = TokenType::BACKSLASH;
+        token.literal = "\\";
+        readChar();
+        return token;
+    }
+
+    if (characterRead == ':'){
+        token.type = TokenType::COLON;
+        token.literal = ":";
+        readChar();
+        return token;
+    }
+
+    if (characterRead == '.'){
+        token.type = TokenType::DOT_OPERATOR;
+        token.literal = ".";
+        readChar();
+        return token;
+    }
+
     if (characterRead == '\''){
         token.type = TokenType::SINGLE_QUOTE;
         token.literal = "'";
+        tokensBuffer.push_back(token);
         readChar();
 
         Token value;
@@ -378,15 +415,15 @@ Token Lexer::getNextToken(std::vector<Token>& tokensBuffer){
             unclosedliteral.line_number = lineNumber;
             unclosedliteral.column_number = columnNumber;
             tokensBuffer.push_back(unclosedliteral);
-            readChar();
         }
 
-        return token;
+        return getNextToken(tokensBuffer);
     }
 
     if (characterRead == '"'){
         token.type = TokenType::DOUBLE_QUOTE;
         token.literal = "\"";
+        tokensBuffer.push_back(token);
         readChar();
 
         Token value;
@@ -413,9 +450,44 @@ Token Lexer::getNextToken(std::vector<Token>& tokensBuffer){
             unclosedliteral.line_number = lineNumber;
             unclosedliteral.column_number = columnNumber;
             tokensBuffer.push_back(unclosedliteral);
-            readChar();
         }
 
+        return getNextToken(tokensBuffer);
+    }
+
+    if(isalpha(characterRead) || characterRead == '_'){
+        int start = currentPosition - 1; // gotta do a -1 because currentposition gets set to 1 and since arrays are 0 based, well
+        // identifiers like _foobar
+        while(isalnum(characterRead) || characterRead == '_'){ // or foo9_bar are acceptable
+            readChar();
+        }
+        int length = currentPosition - start - 1;
+        std::string literal = sourceCode.substr(start, length);
+        if(isKeyword(literal)){
+            token.type = TokenType::KEYWORDS;
+        } else if(isDataType(literal)){
+            token.type = TokenType::DATA_TYPE;
+        } else{
+            token.type = TokenType::IDENTIFIER;
+        }
+        token.literal = sourceCode.substr(start, length);
+        return token;
+    }
+
+    if(isdigit(characterRead)){
+        int start = currentPosition - 1;
+        while(isdigit(characterRead)){
+            readChar();
+        }
+        if(characterRead == '.' && isdigit(nextCharacter)){
+            readChar(); // move past the radix point
+            while(isdigit(characterRead)){
+                readChar();
+            }
+        }
+        token.type = TokenType::VALUE_LITERAL;
+        int length = currentPosition - start - 1;
+        token.literal = sourceCode.substr(start, length);
         return token;
     }
 
@@ -428,7 +500,7 @@ Token Lexer::getNextToken(std::vector<Token>& tokensBuffer){
 std::vector<Token> getTokens(std::string sourceCode){
     std::vector<Token> tokens;
     Lexer lexer(sourceCode);
-    std::vector<Token> tokensBuffer;   // this is for instances when i wanna return more than one token really
+    std::deque<Token> tokensBuffer;   // this is for instances when i wanna return more than one token really
     while(true){
         Token token = lexer.getNextToken(tokensBuffer);
         tokens.push_back(token);

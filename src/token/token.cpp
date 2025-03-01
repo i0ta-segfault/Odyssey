@@ -14,6 +14,8 @@ std::string getTokenTypeName(Token token) {
 
         {TokenType::VALUE_LITERAL, "VALUE_LITERAL"},
         
+        {TokenType::UNCLOSED_STRING_LITERAL, "UNCLOSED_STRING_LITERAL"},
+
         {TokenType::ASSIGNMENT_OPERATOR, "ASSIGNMENT_OPERATOR"},
         {TokenType::PLUS_OPERATOR, "PLUS_OPERATOR"},
         {TokenType::MINUS_OPERATOR, "MINUS_OPERATOR"},
@@ -42,6 +44,7 @@ std::string getTokenTypeName(Token token) {
         {TokenType::SHORTHAND_BITWISE_XOR, "SHORTHAND_BITWISE_XOR"},
 
         {TokenType::CONCAT_PRINT, "CONCAT_PRINT"},  // <<
+        {TokenType::DOT_OPERATOR, "DOT_OPERATOR"},
 
         {TokenType::LOGICAL_AND, "LOGICAL_AND"},  // &&
         {TokenType::LOGICAL_OR, "LOGICAL_OR"},  // ||
@@ -51,6 +54,8 @@ std::string getTokenTypeName(Token token) {
         {TokenType::BITWISE_XOR, "BITWISE_XOR"},  // ^^
 
         {TokenType::QUESTION_MARK, "QUESTION_MARK"},
+
+        {TokenType::BACKSLASH, "BACKSLASH"},
 
         {TokenType::DOUBLE_QUOTE, "DOUBLE_QUOTE"},
         {TokenType::SINGLE_QUOTE, "SINGLE_QUOTE"},
@@ -75,7 +80,8 @@ bool isKeyword(std::string identifier){
     static const std::unordered_set<std::string> keywords = {
         "if", "else", "while", "for", "return", "func", "let",
         "break", "continue",
-        "struct", "enum"
+        "struct", "enum",
+        "true", "false"
     };
 
     bool chk =  keywords.find(identifier) != keywords.end();
@@ -88,7 +94,7 @@ bool isDataType(std::string identifier){
     static const std::unordered_set<std::string> datatypes = {
         "i8", "i16", "i32", "i64", "f32", "f64", 
         "ui8", "ui16", "ui32", "ui64",
-        "string", "char"
+        "String", "char", "bool"
     };
 
     return datatypes.find(identifier) != datatypes.end();

@@ -53,6 +53,7 @@ enum class TokenType {
     SHORTHAND_BITWISE_XOR,  // ^^=
 
     CONCAT_PRINT,  // <<    inspiration from cpp's insertion operator
+    DOT_OPERATOR,
 
     LOGICAL_AND,   // &&
     LOGICAL_OR,    // ||
@@ -62,6 +63,7 @@ enum class TokenType {
     BITWISE_XOR,   // ^^
 
     QUESTION_MARK,   // ?
+    BACKSLASH,
 
     DOUBLE_QUOTE,
     SINGLE_QUOTE,
